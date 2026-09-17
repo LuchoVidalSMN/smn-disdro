@@ -694,12 +694,16 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         
         ax2.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
         ax2.set_yticks([]) # Ocultar los números del eje Y
-        ax2.set_ylabel('Estado', fontsize=10)
-        ax2.set_xlabel('Fecha', fontsize=10)
+        ax2.set_ylabel('Estado', fontsize=12, fontweight='bold')
+        ax2.set_xlabel('Fecha', fontsize=12)
         
         # Formateo del eje X
+        # Indicamos que ponga una etiqueta cada 15 días
+        ax2.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
         ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+        
+        # Achicamos la fuente a tamaño 8 (puedes ajustarlo si lo prefieres)
+        plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right', fontsize=8)
          
         if smn_logo is not None:
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)

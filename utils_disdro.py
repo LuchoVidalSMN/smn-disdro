@@ -683,11 +683,12 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
     try:
         # --- AX1: Serie temporal de Lluvia ---
         ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.5)
-        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=10)
+        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=8)
         ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
         # Formateo del eje Y: etiquetas cada 10 mm
         import matplotlib.ticker as mticker
         ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
+        ax1.tick_params(axis='y', labelsize=6)
 
         ax1.set_title('Resumen Histórico de Observaciones', 
                       fontsize=14, fontweight='bold', pad=15)
@@ -698,8 +699,8 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         
         ax2.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
         ax2.set_yticks([]) # Ocultar los números del eje Y
-        ax2.set_ylabel('Estado', fontsize=10)
-        ax2.set_xlabel('Fecha', fontsize=10)
+        ax2.set_ylabel('Estado', fontsize=8)
+        ax2.set_xlabel('Fecha', fontsize=8)
         
         # Formateo del eje X
         # Indicamos que ponga una etiqueta cada 15 días

@@ -73,12 +73,12 @@ with col_icon:
 
 with col_title:
     # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
-    st.markdown('<h1 style="margin-top: -12px; color: #242C4F; ">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 style="margin-top: -12px; color: #242C4F; >Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
     st.markdown('<p style="font-size: 20px; color: #0090D0; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', unsafe_allow_html=True)
 
 # --- ENCABEZADO DEL INSTRUMENTO ---
 st.markdown("---")
-st.subheader("Acerca del Instrumento")
+st.subheader('<h1 style="margin-top: -12px; color: #242C4F; >Acerca del Instrumento</h1>', unsafe_allow_html=True)
 
 # Dividimos la pantalla en 3 columnas (proporciones: más ancha para texto, iguales para foto y mapa)
 col_texto, col_img, col_mapa = st.columns([2, 1.2, 1.2])

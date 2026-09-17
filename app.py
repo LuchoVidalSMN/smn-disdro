@@ -56,6 +56,7 @@ def buscar_y_leer_csv(service, nombre_archivo):
 
 # --- RESTO DEL DASHBOARD ---
 st.set_page_config(page_title="Dashboard Disdrómetro SMN", layout="wide")
+st.image("smn_horizontal_arg-01.jpg", width=250)
 st.title("🌧️ Disdrómetro SMN-Dorrego | Dashboard Interactivo (EXPERIMENTAL)")
 
 # --- ENCABEZADO DEL INSTRUMENTO ---

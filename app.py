@@ -75,7 +75,7 @@ with col_title:
     # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
     st.markdown('<h1 style="margin-top: -12px;">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
     st.markdown(
-    '<p style="font-size: 18px; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', 
+    '<p style="font-size: 20px; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', 
     unsafe_allow_html=True)
 
 # --- ENCABEZADO DEL INSTRUMENTO ---

@@ -683,7 +683,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
     try:
         # --- AX1: Serie temporal de Lluvia ---
         ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.5)
-        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=10, fontweight='bold')
+        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=10)
         ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
         ax1.set_title('Resumen Histórico de Observaciones', 
                       fontsize=14, fontweight='bold', pad=15)
@@ -694,7 +694,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         
         ax2.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
         ax2.set_yticks([]) # Ocultar los números del eje Y
-        ax2.set_ylabel('Estado', fontsize=10, fontweight='bold')
+        ax2.set_ylabel('Estado', fontsize=10)
         ax2.set_xlabel('Fecha', fontsize=10)
         
         # Formateo del eje X
@@ -702,7 +702,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
         
         # --- Detalles estéticos (Logo y Copyright) ---
-        fig.text(0.85, 0.01, '© 2026 DPMAYSR-DNCIPS/SMN', ha='center', va='bottom', fontsize=10, color='gray')
+        fig.text(0.85, 0.001, '© 2026 DPMAYSR-DNCIPS/SMN', ha='center', va='bottom', fontsize=10, color='gray')
         
         if smn_logo is not None:
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)

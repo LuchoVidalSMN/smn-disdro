@@ -17,24 +17,6 @@ from googleapiclient.http import MediaIoBaseDownload
 
 import utils_disdro
 
-# 1. Configuración de la página (Ícono en la pestaña del navegador)
-st.set_page_config(
-                   page_title="Dashboard Disdrómetro SMN", 
-                   page_icon="disdro_icon.png", 
-                   layout="wide"
-                  )
-
-# 2. Título principal con ícono alineado
-col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio
-
-with col_icon:
-    # Mostramos el ícono con un ancho fijo en píxeles
-    st.image("disdro_icon.png", width=65)
-
-with col_title:
-    # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
-    st.markdown('<h1 style="margin-top: -15px;">Disdrómetro SMN-Dorrego | Dashboard Interactivo (EXPERIMENTAL)</h1>', unsafe_allow_html=True)
-
 # --- CONFIGURACIÓN GOOGLE DRIVE ---
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
@@ -73,9 +55,25 @@ def buscar_y_leer_csv(service, nombre_archivo):
     return df
 
 # --- RESTO DEL DASHBOARD ---
-st.set_page_config(page_title="Dashboard Disdrómetro SMN", layout="wide")
+
+# 1. Configuración de la página (Ícono en la pestaña del navegador)
+st.set_page_config(
+                   page_title="Dashboard Disdrómetro SMN", 
+                   page_icon="disdro_icon.png", 
+                   layout="wide"
+                  )
 st.image("smn_horizontal_arg-01.jpg", width=250)
-st.title("🌧️ Disdrómetro SMN-Dorrego | Dashboard Interactivo (EXPERIMENTAL)")
+
+# 2. Título principal con ícono alineado
+col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio
+
+with col_icon:
+    # Mostramos el ícono con un ancho fijo en píxeles
+    st.image("disdro_icon.png", width=65)
+
+with col_title:
+    # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
+    st.markdown('<h1 style="margin-top: -15px;">Disdrómetro SMN-Dorrego | Dashboard Interactivo (EXPERIMENTAL)</h1>', unsafe_allow_html=True)
 
 # --- ENCABEZADO DEL INSTRUMENTO ---
 st.markdown("---")

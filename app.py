@@ -96,15 +96,49 @@ with col_mapa:
 st.markdown("---")
 # --- FIN DEL ENCABEZADO ---
 
+st.markdown("---")
+st.subheader("📊 Disponibilidad Histórica")
+
+logo_path = Path('./smn_logo.png')
+smn_logo = mpimg.imread(logo_path) if logo_path.exists() else None
+
+# Botón para cargar el resumen (o puedes dejarlo cargando por defecto sin botón)
+if st.button("Actualizar Resumen Histórico"):
+    with st.spinner("Obteniendo datos históricos..."):
+        try:
+            drive_service = get_drive_service()
+            # Leemos el archivo compilado desde Drive
+            df_resumen = buscar_y_leer_csv(drive_service, 'resumen_historico.csv')
+            
+            if df_resumen is not None:
+                # Generamos la imagen
+                path_out_resumen = Path('./imagenes/resumen/')
+                path_out_resumen.mkdir(parents=True, exist_ok=True)
+                
+                utils_disdro.plot_resumen_historico(
+                                                    df=df_resumen, 
+                                                    path_out=path_out_resumen, 
+                                                    smn_logo=smn_logo
+                                                   )
+                
+                # Desplegamos la imagen
+                archivo_resumen = path_out_resumen.joinpath('disdro_SMN-Dorrego_resumen_historico.png')
+                if archivo_resumen.exists():
+                    st.image(str(archivo_resumen), use_container_width=True)
+                    
+                    # Leyenda rápida debajo del gráfico
+                    st.caption("🟢 Dato disponible | 🔴 Sin registros/Equipo apagado")
+            else:
+                st.warning("No se encontró el archivo 'resumen_historico.csv' en Google Drive.")
+        except Exception as e:
+            st.error(f"Error procesando el histórico: {e}")
+
 path_out2  = Path('./imagenes/daily/hietograma/')
 path_out3  = Path('./imagenes/daily/scatter_Dm_Nw/')
 path_out4  = Path('./imagenes/daily/scatter_Z_R/')
 
 for p in [path_out2, path_out3, path_out4]:
     p.mkdir(parents=True, exist_ok=True)
-
-logo_path = Path('./smn_logo.png')
-smn_logo = mpimg.imread(logo_path) if logo_path.exists() else None
 
 st.sidebar.header("Parámetros de Visualización")
 fecha_seleccionada = st.sidebar.date_input("Seleccionar Fecha", datetime.today())

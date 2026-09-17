@@ -96,13 +96,10 @@ with col_mapa:
 st.markdown("---")
 # --- FIN DEL ENCABEZADO ---
 
-st.markdown("---")
-st.subheader("📊 Disponibilidad Histórica")
-
 logo_path = Path('./smn_logo.png')
 smn_logo = mpimg.imread(logo_path) if logo_path.exists() else None
 
-st.subheader("📊 Disponibilidad Histórica")
+st.markdown("---")
 
 # Al quitar el botón, esto se ejecuta automáticamente apenas carga la página
 with st.spinner("Obteniendo datos históricos..."):

@@ -78,7 +78,7 @@ with col_title:
 
 # --- ENCABEZADO DEL INSTRUMENTO ---
 st.markdown("---")
-st.subheader('<h1 style="margin-top: -12px; color: #242C4F; >Acerca del Instrumento</h1>', unsafe_allow_html=True)
+st.markdown('<h3 style="color: #242C4F; font-size: 26px;">Acerca del Instrumento</h3>', unsafe_allow_html=True)
 
 # Dividimos la pantalla en 3 columnas (proporciones: más ancha para texto, iguales para foto y mapa)
 col_texto, col_img, col_mapa = st.columns([2, 1.2, 1.2])

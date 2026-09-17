@@ -99,8 +99,6 @@ st.markdown("---")
 logo_path = Path('./smn_logo.png')
 smn_logo = mpimg.imread(logo_path) if logo_path.exists() else None
 
-st.markdown("---")
-
 # Al quitar el botón, esto se ejecuta automáticamente apenas carga la página
 with st.spinner("Obteniendo datos históricos..."):
     try:

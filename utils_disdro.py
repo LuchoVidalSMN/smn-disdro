@@ -685,9 +685,13 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.5)
         ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=10)
         ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
+        # Formateo del eje Y: etiquetas cada 10 mm
+        import matplotlib.ticker as mticker
+        ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
+
         ax1.set_title('Resumen Histórico de Observaciones', 
                       fontsize=14, fontweight='bold', pad=15)
-        
+ 
         # --- AX2: Disponibilidad de Datos ---
         # Mapeamos True a verde y False a rojo
         colores = ['#2ca02c' if disp else '#d62728' for disp in df['Dato_Disponible']]
@@ -699,7 +703,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         
         # Formateo del eje X
         # Indicamos que ponga una etiqueta cada 15 días
-        ax2.xaxis.set_major_locator(mdates.DayLocator(interval=14)) 
+        ax2.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
         ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         
         # Achicamos la fuente a tamaño 8 (puedes ajustarlo si lo prefieres)

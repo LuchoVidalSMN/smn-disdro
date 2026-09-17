@@ -700,10 +700,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         # Formateo del eje X
         ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
-        
-        # --- Detalles estéticos (Logo y Copyright) ---
-        fig.text(0.85, 0.001, '© 2026 DPMAYSR-DNCIPS/SMN', ha='center', va='bottom', fontsize=10, color='gray')
-        
+         
         if smn_logo is not None:
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)
             ab = AnnotationBbox(imagebox, (0.5, 0.5), xycoords='axes fraction', frameon=False, pad=0.0)

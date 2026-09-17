@@ -58,6 +58,43 @@ def buscar_y_leer_csv(service, nombre_archivo):
 st.set_page_config(page_title="Dashboard Disdrómetro SMN", layout="wide")
 st.title("🌧️ Disdrómetro SMN-Dorrego | Dashboard Interactivo (EXPERIMENTAL)")
 
+# --- ENCABEZADO DEL INSTRUMENTO ---
+st.markdown("---")
+st.subheader("Acerca del Instrumento")
+
+# Dividimos la pantalla en 3 columnas (proporciones: más ancha para texto, iguales para foto y mapa)
+col_texto, col_img, col_mapa = st.columns([2, 1.2, 1.2])
+
+with col_texto:
+    st.markdown("""
+    **Modelo:** OTT Parsivel² (Disdrómetro Óptico Láser)  
+    **Ubicación:** [Estación Meteorológica Dorrego - SMN](https://maps.app.goo.gl/7PPE2mYATrTNpQ9x8)
+    
+    **Principio de funcionamiento:**  
+    El equipo emite un haz de luz láser horizontal continuo entre sus dos cabezales. Cuando la precipitación atraviesa este haz, interrumpe temporalmente una fracción de la señal óptica.
+    
+    * **Tamaño de la gota:** Se calcula analizando la amplitud máxima del oscurecimiento (cuánta luz bloquea la partícula).
+    * **Velocidad de caída:** Se determina midiendo el tiempo que la partícula tarda en cruzar por completo el haz de luz.
+    
+    Combinando el tamaño y la velocidad individual de miles de gotas, el algoritmo reconstruye la microfísica de la tormenta, permitiendo derivar la tasa de lluvia, el equivalente de reflectividad radar (Z) y la energía cinética.
+    """)
+
+with col_img:
+    try:
+        # Se asegura de leer la imagen si está en el mismo directorio
+        st.image("20250428_132821.jpg", caption="OTT Parsivel² instalado en el sitio", use_container_width=True)
+    except FileNotFoundError:
+        st.info("Imagen del sitio no encontrada.")
+
+with col_mapa:
+    # Coordenadas de la zona de la Estación Dorrego (CABA) para el st.map
+    # Puedes ajustar los decimales si quieres correr el punto exacto
+    df_ubicacion = pd.DataFrame({'lat': [-34.5663], 'lon': [-58.4285]})
+    st.map(df_ubicacion, zoom=13, use_container_width=True)
+
+st.markdown("---")
+# --- FIN DEL ENCABEZADO ---
+
 path_out2  = Path('./imagenes/daily/hietograma/')
 path_out3  = Path('./imagenes/daily/scatter_Dm_Nw/')
 path_out4  = Path('./imagenes/daily/scatter_Z_R/')

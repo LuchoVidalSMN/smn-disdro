@@ -20,7 +20,7 @@ import utils_disdro
 # --- CONFIGURACIÓN GOOGLE DRIVE ---
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-@st.cache_resource
+# @st.cache_resource
 def get_drive_service():
     """Autentica y crea el servicio de Google Drive usando los secretos de Streamlit."""
     creds_dict = st.secrets["gcp_service_account"]

@@ -1,0 +1,12 @@
+# Ignorar datos e imágenes locales
+output/
+imagenes/
+*.csv
+
+# Ignorar credenciales y secretos (para no subir tu clave de Google por error)
+*.json
+.env
+
+# Ignorar archivos temporales de Python
+__pycache__/
+*.pyc

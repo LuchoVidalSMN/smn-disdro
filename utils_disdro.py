@@ -688,10 +688,10 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         # Formateo del eje Y: etiquetas cada 10 mm
         import matplotlib.ticker as mticker
         ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
-        ax1.tick_params(axis='y', labelsize=6)
+        ax1.tick_params(axis='y', labelsize=8)
 
         ax1.set_title('Resumen Histórico de Observaciones', 
-                      fontsize=14, fontweight='bold', pad=15)
+                      fontsize=14, pad=10)
  
         # --- AX2: Disponibilidad de Datos ---
         # Mapeamos True a verde y False a rojo

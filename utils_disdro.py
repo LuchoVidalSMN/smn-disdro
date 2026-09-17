@@ -7,6 +7,7 @@ Modified on Mon Jul 6, 2026
 @author: Dr. Luciano Vidal DPMAYSR-DNCIPS-SMN
 
 """
+# =========================================================================== #
 
 import matplotlib
 matplotlib.use('Agg')  # Configura Matplotlib para trabajar sin interfaz gráfica
@@ -22,7 +23,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from scipy.stats import linregress
 from sklearn.metrics import mean_squared_error
 
-#==============================================================================#
+# =========================================================================== #
 
 bins = np.array([0.062, 0.187, 0.312, 0.437, 0.562, 0.687, 0.812,
                     0.937, 1.062, 1.187, 1.375, 1.625, 1.875, 2.125,
@@ -42,7 +43,7 @@ drop_vel = np.array([0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75,
 vf = -0.193 + (4.96 * bins) - (0.904 * np.power(bins, 2)) + \
     (0.0566 * np.power(bins, 3))
 
-#==============================================================================#
+# =========================================================================== #
 
 mascara = np.zeros((32, 32), dtype='int')
 
@@ -54,7 +55,7 @@ for i in range(vf.size) :
         if not(vf[j]*0.4 < matriz_velocidad[i][j] < vf[j]*1.6) :
             mascara[i][j] = 1
 
-#==============================================================================#
+# =========================================================================== #
 
 def leo_espectro(archivo) :
 
@@ -126,7 +127,7 @@ def leo_espectro(archivo) :
 
     return fecha, dBZ, RR, AccRain, KE_time, KE_mm, DG, matriz_mask, Dm, Nw, log10_Nw # Added Dm, Nw, log10_Nw
 
-#==============================================================================#
+# =========================================================================== #
 
 def plot_hietograma(df, fecha_obj, plot_date, path_out2, smn_logo=None) :
     
@@ -226,7 +227,7 @@ def plot_hietograma(df, fecha_obj, plot_date, path_out2, smn_logo=None) :
         # Esto se ejecuta SIEMPRE, incluso si el código de arriba falla, evitando fugas de memoria
         plt.close(fig)
 
-#=============================================================================#
+# =========================================================================== #
 
 def plot_hietograma_sin_datos(df, fecha_obj, plot_date, path_out2, smn_logo=None) :
     
@@ -301,7 +302,7 @@ def plot_hietograma_sin_datos(df, fecha_obj, plot_date, path_out2, smn_logo=None
         
         plt.close(fig)
 
-#=============================================================================#
+# =========================================================================== #
 
 def plot_zr(df, fecha, path_imagenes, smn_logo=None) :
     
@@ -380,7 +381,7 @@ def plot_zr(df, fecha, path_imagenes, smn_logo=None) :
     finally:
         plt.close(fig)
 
-#=============================================================================#
+# =========================================================================== #
 
 def plot_zr_sin_datos(fecha, path_imagenes, smn_logo=None) :
     
@@ -443,7 +444,7 @@ def plot_zr_sin_datos(fecha, path_imagenes, smn_logo=None) :
     finally:
         plt.close(fig)
         
-#=============================================================================#
+# =========================================================================== #
 
 def plot_dm_vs_log10nw(df, path_imagenes, smn_logo=None) :
     
@@ -521,7 +522,7 @@ def plot_dm_vs_log10nw(df, path_imagenes, smn_logo=None) :
     finally:
         plt.close(fig_scatter)
 
-#=============================================================================#
+# =========================================================================== #
 
 def plot_dm_vs_log10nw_sin_datos(fecha_obj, path_imagenes, smn_logo=None) :
     
@@ -586,7 +587,7 @@ def plot_dm_vs_log10nw_sin_datos(fecha_obj, path_imagenes, smn_logo=None) :
     finally:
         plt.close(fig_scatter)
 
-#=============================================================================#
+# =========================================================================== #
 
 def plot_espectrograma_dsd(df, clases_diametros, matriz_nd, fecha_obj, plot_date, path_out, smn_logo=None) :
     
@@ -661,4 +662,61 @@ def plot_espectrograma_dsd(df, clases_diametros, matriz_nd, fecha_obj, plot_date
     finally :
         plt.close(fig)
         
-#=============================================================================#
+# =========================================================================== #
+
+def plot_resumen_historico(df, path_out, smn_logo=None):
+    """
+    Genera un gráfico resumen con la lluvia diaria acumulada y la disponibilidad de datos.
+    El DataFrame de entrada debe tener las columnas: 'Fecha', 'Lluvia_mm' y 'Dato_Disponible'.
+    """
+    import matplotlib.dates as mdates
+    
+    # Asegurar que la columna Fecha sea datetime
+    df['Fecha'] = pd.to_datetime(df['Fecha'])
+    
+    # Crear figura con dos subplots apilados (proporción 4:1)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 6), 
+                                   gridspec_kw={'height_ratios': [4, 1], 'hspace': 0.05}, 
+                                   sharex=True)
+    
+    try:
+        # --- AX1: Serie temporal de Lluvia ---
+        ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.0)
+        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=12, fontweight='bold')
+        ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
+        ax1.set_title('Resumen Histórico de Observaciones - Disdrómetro SMN-Dorrego', 
+                      fontsize=16, fontweight='bold', pad=15)
+        
+        # --- AX2: Disponibilidad de Datos ---
+        # Mapeamos True a verde y False a rojo
+        colores = ['#2ca02c' if disp else '#d62728' for disp in df['Dato_Disponible']]
+        
+        ax2.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
+        ax2.set_yticks([]) # Ocultar los números del eje Y
+        ax2.set_ylabel('Estado', fontsize=12, fontweight='bold')
+        ax2.set_xlabel('Fecha', fontsize=12)
+        
+        # Formateo del eje X
+        ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+        
+        # --- Detalles estéticos (Logo y Copyright) ---
+        fig.text(0.85, 0.02, '© 2026 DPMAYSR-DNCIPS/SMN', ha='center', va='bottom', fontsize=10, color='gray')
+        
+        if smn_logo is not None:
+            imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)
+            ab = AnnotationBbox(imagebox, (0.5, 0.5), xycoords='axes fraction', frameon=False, pad=0.0)
+            ax1.add_artist(ab)
+            
+        plt.tight_layout()
+        
+        # Guardar archivo
+        output_filename = 'disdro_SMN-Dorrego_resumen_historico.png'
+        output_path = path_out.joinpath(output_filename)
+        plt.savefig(output_path, dpi=150, bbox_inches='tight')
+        print(f"Figura resumen guardada en: {output_path}")
+        
+    finally:
+        plt.close(fig)
+
+# =========================================================================== #

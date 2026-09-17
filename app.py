@@ -90,7 +90,7 @@ with col_img:
 with col_mapa:
     # Coordenadas de la zona de la Estación Dorrego (CABA) para el st.map
     # Puedes ajustar los decimales si quieres correr el punto exacto
-    df_ubicacion = pd.DataFrame({'lat': [-34.5663], 'lon': [-58.4285]})
+    df_ubicacion = pd.DataFrame({'lat': [-34.56405], 'lon': [-58.41742]})
     st.map(df_ubicacion, zoom=13, use_container_width=True)
 
 st.markdown("---")

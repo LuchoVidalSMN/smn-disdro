@@ -666,50 +666,71 @@ def plot_espectrograma_dsd(df, clases_diametros, matriz_nd, fecha_obj, plot_date
 
 def plot_resumen_historico(df, path_out, smn_logo=None):
     """
-    Genera un gráfico resumen con la lluvia diaria acumulada y la disponibilidad de datos.
-    El DataFrame de entrada debe tener las columnas: 'Fecha', 'Lluvia_mm' y 'Dato_Disponible'.
+    Genera un gráfico resumen con la lluvia diaria acumulada, parámetros Z-R 
+    y la disponibilidad de datos.
+    El DataFrame debe tener: 'Fecha', 'Lluvia_mm', 'Dato_Disponible', 'ZR_param_a', 'ZR_param_b'.
     """
     import matplotlib.dates as mdates
+    import matplotlib.ticker as mticker
     
     # Asegurar que la columna Fecha sea datetime
     df['Fecha'] = pd.to_datetime(df['Fecha'])
     
-    # Crear figura con dos subplots apilados (proporción 4:1)
-    fig, (ax1, ax2) = plt.subplots(2, 1, 
-                                   figsize=(12, 6), 
-                                   gridspec_kw={'height_ratios': [4, 1], 'hspace': 0.05}, 
+    # Crear figura con TRES subplots apilados
+    # Proporciones: 4 para Lluvia, 2.5 para Z-R, 1 para Disponibilidad
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, 
+                                   figsize=(12, 8), 
+                                   gridspec_kw={'height_ratios': [4, 2.5, 1], 'hspace': 0.08}, 
                                    sharex=True)
     
     try:
         # --- AX1: Serie temporal de Lluvia ---
         ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.5)
-        ax1.set_ylabel('Lluvia Diaria [mm]', fontsize=8)
+        ax1.set_ylabel('Lluvia Diaria\n[mm]', fontsize=9, fontweight='bold')
         ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
-        # Formateo del eje Y: etiquetas cada 10 mm
-        import matplotlib.ticker as mticker
         ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
         ax1.tick_params(axis='y', labelsize=8)
 
-        ax1.set_title('Resumen Histórico de Observaciones', 
+        ax1.set_title('Resumen Histórico de Observaciones - Disdrómetro SMN', 
                       fontsize=14, pad=10)
  
-        # --- AX2: Disponibilidad de Datos ---
-        # Mapeamos True a verde y False a rojo
+        # --- AX2: Parámetros Z-R (Ejes Izquierdo y Derecho) ---
+        if 'ZR_param_a' in df.columns and 'ZR_param_b' in df.columns:
+            # Filtramos los días sin lluvia (donde a y b son nulos) para graficar líneas limpias
+            df_zr = df.dropna(subset=['ZR_param_a', 'ZR_param_b'])
+            
+            # Eje Y Izquierdo (Parámetro a)
+            ax2.plot(df_zr['Fecha'], df_zr['ZR_param_a'], marker='o', markersize=4, 
+                     color='purple', linestyle='-', linewidth=1.5, alpha=0.8)
+            ax2.set_ylabel('Parámetro a', fontsize=9, fontweight='bold', color='purple')
+            ax2.tick_params(axis='y', labelcolor='purple', labelsize=8)
+            ax2.grid(True, axis='y', linestyle=':', alpha=0.5)
+            
+            # Eje Y Derecho adicional (Parámetro b) mediante twinx()
+            ax2_b = ax2.twinx()
+            ax2_b.plot(df_zr['Fecha'], df_zr['ZR_param_b'], marker='s', markersize=4, 
+                       color='darkorange', linestyle='--', linewidth=1.5, alpha=0.8)
+            ax2_b.set_ylabel('Parámetro b', fontsize=9, fontweight='bold', color='darkorange')
+            ax2_b.tick_params(axis='y', labelcolor='darkorange', labelsize=8)
+        else:
+            # En caso de que el CSV aún no tenga las columnas generadas
+            ax2.text(0.5, 0.5, 'Parámetros Z-R no disponibles', ha='center', va='center', color='gray')
+            ax2.set_yticks([])
+
+        # --- AX3: Disponibilidad de Datos ---
         colores = ['#2ca02c' if disp else '#d62728' for disp in df['Dato_Disponible']]
         
-        ax2.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
-        ax2.set_yticks([]) # Ocultar los números del eje Y
-        ax2.set_ylabel('Estado', fontsize=8)
-        ax2.set_xlabel('Fecha', fontsize=8)
+        ax3.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
+        ax3.set_yticks([]) # Ocultar los números del eje Y
+        ax3.set_ylabel('Estado', fontsize=9, fontweight='bold')
+        ax3.set_xlabel('Fecha', fontsize=9, fontweight='bold')
         
-        # Formateo del eje X
-        # Indicamos que ponga una etiqueta cada 15 días
-        ax2.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
-        ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        
-        # Achicamos la fuente a tamaño 8 (puedes ajustarlo si lo prefieres)
-        plt.setp(ax2.xaxis.get_majorticklabels(), rotation=90, ha='right', fontsize=6)
+        # Formateo del eje X (etiquetas cada 15 días)
+        ax3.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
+        ax3.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.setp(ax3.xaxis.get_majorticklabels(), rotation=90, ha='center', fontsize=8)
          
+        # Marca de agua en el primer gráfico
         if smn_logo is not None:
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)
             ab = AnnotationBbox(imagebox, (0.5, 0.5), xycoords='axes fraction', frameon=False, pad=0.0)

@@ -123,15 +123,37 @@ with st.spinner("Obteniendo datos históricos..."):
         df_resumen = buscar_y_leer_csv(drive_service, 'resumen_historico.csv')
         
         if df_resumen is not None:
+            
             # Generamos la imagen
             path_out_resumen = Path('./imagenes/resumen/')
             path_out_resumen.mkdir(parents=True, exist_ok=True)
             
+            # --- EXPLICACIÓN DE LOS GRÁFICOS ---
+            with st.expander("ℹ️ ¿Cómo interpretar estos gráficos? (Guía rápida)"):
+                st.markdown("""
+                Los disdrómetros ópticos permiten estudiar la **microfísica de la precipitación**, es decir, analizar las gotas individuales en lugar de solo medir el volumen total de agua. Al seleccionar una fecha, el dashboard genera tres gráficos clave:
+            
+                ### 1. Intensidad y Lluvia Acumulada
+                * **Qué muestra:** La evolución temporal de la tasa de precipitación (mm/h) y el acumulado total (mm) durante el día.
+                * **Cómo se interpreta:** Es el gráfico más tradicional. Los picos altos en la intensidad indican los momentos de chaparrones fuertes (precipitación convectiva), mientras que los valores bajos y constantes indican lluvias débiles o lloviznas (precipitación estratiforme). El acumulado te dirá cuánta agua total cayó hasta ese momento.
+            
+                ### 2. Evolución Temporal del Tamaño de Gotas (DSD)
+                * **Qué muestra:** Un espectrograma donde el eje X es el tiempo, el eje Y es el diámetro de las gotas (mm), y la escala de colores indica la **concentración** (cuántas gotas cayeron de cada tamaño).
+                * **Cómo se interpreta:** Permite "ver por dentro" la tormenta. Las lloviznas suaves se verán como una mancha de colores concentrada en la parte baja del gráfico (gotas de 1 a 2 mm). Por el contrario, en tormentas severas verás colores extendiéndose hacia arriba, confirmando la presencia de gotas grandes (de 5 mm o más) o incluso granizo.
+            
+                ### 3. Velocidad de Caída vs. Diámetro
+                * **Qué muestra:** Un mapa de calor o densidad de las partículas registradas en todo el día. El eje X es el diámetro (mm) y el eje Y es la velocidad de caída (m/s).
+                * **Cómo se interpreta:** Sirve para identificar el **tipo de meteoro** (lluvia, nieve, granizo) y hacer control de calidad. Las gotas de lluvia líquida siguen una ley física (la curva de *Gunn-Kinzer*), por lo que los datos deben agruparse a lo largo de esa línea teórica. 
+                    * *Si hay datos por encima de la curva:* Las partículas cayeron más rápido de lo normal (suele indicar granizo o salpicaduras).
+                    * *Si hay datos muy por debajo de la curva:* Las partículas cayeron muy lento (indica copos de nieve, insectos, o viento fuerte cruzado que alteró la medición del láser).
+                """)
+            # -----------------------------------
+            
             utils_disdro.plot_resumen_historico(
-                df=df_resumen, 
-                path_out=path_out_resumen, 
-                smn_logo=smn_logo
-            )
+                                                df=df_resumen, 
+                                                path_out=path_out_resumen, 
+                                                smn_logo=smn_logo
+                                               )
             
             # Desplegamos la imagen
             archivo_resumen = path_out_resumen.joinpath('disdro_SMN-Dorrego_resumen_historico.png')

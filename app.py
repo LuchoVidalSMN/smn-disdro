@@ -67,10 +67,6 @@ st.image("encabezado_combinado.png", width=400) # Ajusta el ancho según prefier
 # 2. Título principal con ícono alineado
 col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio
 
-with col_icon:
-    # Mostramos el ícono con un ancho fijo en píxeles
-    st.image("disdro_icon.png", width=65)
-
 with col_title:
     # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
     st.markdown('<h1 style="margin-top: -12px; color: #242C4F; ">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)

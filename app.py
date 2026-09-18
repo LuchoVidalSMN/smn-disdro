@@ -129,23 +129,44 @@ with st.spinner("Obteniendo datos históricos..."):
             path_out_resumen.mkdir(parents=True, exist_ok=True)
             
             # --- EXPLICACIÓN DE LOS GRÁFICOS ---
+            
+            # Inyectamos CSS para modificar el estilo del título del expander
+            st.markdown(
+                        """
+                        <style>
+                        /* Apunta específicamente al texto del encabezado del expander */
+                        [data-testid="stExpander"] summary p {
+                            font-size: 18px !important; 
+                            color: #242C4F !important; 
+                            font-weight: bold !important;
+                        }
+                        </style>
+                        """,
+                        unsafe_allow_html=True
+                       )
+            
             with st.expander("ℹ️ ¿Cómo interpretar estos gráficos? (Guía rápida)"):
                 st.markdown("""
-                Los disdrómetros ópticos permiten estudiar la **microfísica de la precipitación**, es decir, analizar las gotas individuales en lugar de solo medir el volumen total de agua. Al seleccionar una fecha, el dashboard genera tres gráficos clave:
+                Este dashboard permite visualizar tanto el comportamiento a largo plazo del instrumento como la **microfísica detallada** de cada evento de lluvia. Aquí te explicamos qué muestra cada gráfica:
             
-                ### 1. Intensidad y Lluvia Acumulada
-                * **Qué muestra:** La evolución temporal de la tasa de precipitación (mm/h) y el acumulado total (mm) durante el día.
-                * **Cómo se interpreta:** Es el gráfico más tradicional. Los picos altos en la intensidad indican los momentos de chaparrones fuertes (precipitación convectiva), mientras que los valores bajos y constantes indican lluvias débiles o lloviznas (precipitación estratiforme). El acumulado te dirá cuánta agua total cayó hasta ese momento.
+                ### 1. Resumen Histórico (Disponibilidad y Lluvia Diaria)
+                * **Qué muestra:** Un panorama general de toda la base de datos. Combina la lluvia total acumulada por día (barras azules) con una línea de tiempo del estado del equipo.
+                * **Cómo se interpreta:** Sirve para identificar rápidamente los días más lluviosos del mes o del año. La barra inferior indica si el disdrómetro estuvo registrando datos correctamente (verde) o si estuvo apagado/sin conexión (rojo).
             
-                ### 2. Evolución Temporal del Tamaño de Gotas (DSD)
-                * **Qué muestra:** Un espectrograma donde el eje X es el tiempo, el eje Y es el diámetro de las gotas (mm), y la escala de colores indica la **concentración** (cuántas gotas cayeron de cada tamaño).
-                * **Cómo se interpreta:** Permite "ver por dentro" la tormenta. Las lloviznas suaves se verán como una mancha de colores concentrada en la parte baja del gráfico (gotas de 1 a 2 mm). Por el contrario, en tormentas severas verás colores extendiéndose hacia arriba, confirmando la presencia de gotas grandes (de 5 mm o más) o incluso granizo.
+                ### 2. Hietograma (Intensidad y Lluvia Acumulada)
+                * **Qué muestra:** La evolución de la lluvia durante el día seleccionado. Combina la **tasa de precipitación** (mm/h, en barras) y el **acumulado total** (mm, en línea continua).
+                * **Cómo se interpreta:** Los picos altos en las barras indican momentos de chaparrones intensos (precipitación convectiva), mientras que los valores bajos y constantes indican lloviznas (precipitación estratiforme). La curva del acumulado te muestra cómo fue sumando el agua hasta llegar al total del día.
             
-                ### 3. Velocidad de Caída vs. Diámetro
-                * **Qué muestra:** Un mapa de calor o densidad de las partículas registradas en todo el día. El eje X es el diámetro (mm) y el eje Y es la velocidad de caída (m/s).
-                * **Cómo se interpreta:** Sirve para identificar el **tipo de meteoro** (lluvia, nieve, granizo) y hacer control de calidad. Las gotas de lluvia líquida siguen una ley física (la curva de *Gunn-Kinzer*), por lo que los datos deben agruparse a lo largo de esa línea teórica. 
-                    * *Si hay datos por encima de la curva:* Las partículas cayeron más rápido de lo normal (suele indicar granizo o salpicaduras).
-                    * *Si hay datos muy por debajo de la curva:* Las partículas cayeron muy lento (indica copos de nieve, insectos, o viento fuerte cruzado que alteró la medición del láser).
+                ### 3. Relación Z-R (Reflectividad vs. Tasa de Lluvia)
+                * **Qué muestra:** Compara la Tasa de Lluvia ($R$, en mm/h) con la Reflectividad Equivalente del Radar ($Z$, en dBZ) calculada a partir de las gotas medidas por el disdrómetro.
+                * **Cómo se interpreta:** Es una gráfica fundamental en meteorología de radares. Los radares meteorológicos miden $Z$, pero los meteorólogos necesitan saber $R$ (cuánta agua cae). El disdrómetro mide ambas al mismo tiempo, permitiendo ajustar las fórmulas (las curvas teóricas) que usan los radares para estimar la lluvia de forma más precisa.
+            
+                ### 4. Parámetros Microfísicos ($D_m$ vs $\log_{10}N_w$)
+                * **Qué muestra:** Relaciona el **diámetro medio de las gotas** ($D_m$, en mm) con la **concentración de gotas** ($\log_{10}N_w$). 
+                * **Cómo se interpreta:** Se utiliza para clasificar el tipo de tormenta. 
+                    * **Lluvia Estratiforme (lluvia mansa/continua):** Se agrupa hacia la izquierda y arriba (muchas gotas de tamaño pequeño a mediano).
+                    * **Lluvia Convectiva (tormentas fuertes):** Se desplaza hacia la derecha (gotas mucho más grandes, típicas de nubes de gran desarrollo vertical). 
+                    Esta separación ayuda a los investigadores a entender los procesos físicos dentro de la nube.
                 """)
             # -----------------------------------
             

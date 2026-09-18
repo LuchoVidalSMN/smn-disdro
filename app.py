@@ -145,7 +145,7 @@ with st.spinner("Obteniendo datos históricos..."):
                         unsafe_allow_html=True
                        )
             
-            with st.expander("ℹ️ ¿Cómo interpretar estos gráficos? (Guía rápida)"):
+            with st.expander("🤔 ¿Cómo interpretar estos gráficos?"):
                 st.markdown("""
                 Este dashboard permite visualizar tanto el comportamiento a largo plazo del instrumento como la **microfísica detallada** de cada evento de lluvia. Aquí te explicamos qué muestra cada gráfica:
             

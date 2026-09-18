@@ -65,12 +65,15 @@ st.set_page_config(
 st.image("encabezado_combinado.png", width=400) # Ajusta el ancho según prefieras
 
 # 2. Título principal con ícono alineado
-col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio
+# col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio
 
-with col_title:
-    # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
-    st.markdown('<h1 style="margin-top: -12px; color: #242C4F; ">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="font-size: 20px; color: #0090D0; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', unsafe_allow_html=True)
+# with col_title:
+#     # Ajustamos un poco el margen superior usando markdown/HTML para alinearlo perfectamente con el centro del ícono
+#     st.markdown('<h1 style="margin-top: -12px; color: #242C4F; ">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
+#     st.markdown('<p style="font-size: 20px; color: #0090D0; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', unsafe_allow_html=True)
+
+st.markdown('<h1 style="margin-top: -12px; color: #242C4F; ">Disdrómetro SMN | Dashboard Interactivo</h1>', unsafe_allow_html=True)
+st.markdown('<p style="font-size: 20px; color: #0090D0; ">Dirección de Productos de Modelación Ambiental y de Sensores Remotos - DNCIPS</p>', unsafe_allow_html=True)
 
 # --- ENCABEZADO DEL INSTRUMENTO ---
 st.markdown("---")

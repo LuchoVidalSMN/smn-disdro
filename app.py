@@ -62,7 +62,7 @@ st.set_page_config(
                    page_icon="disdro_icon.png", 
                    layout="wide"
                   )
-st.image("smn_horizontal_arg-01.jpg", width=250)
+st.image("encabezado_combinado.png", width=400) # Ajusta el ancho según prefieras
 
 # 2. Título principal con ícono alineado
 col_icon, col_title = st.columns([1, 15]) # Proporción para que el ícono ocupe poco espacio

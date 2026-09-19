@@ -735,8 +735,6 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)
             ab = AnnotationBbox(imagebox, (0.5, 0.5), xycoords='axes fraction', frameon=False, pad=0.0)
             ax1.add_artist(ab)
-            
-        plt.tight_layout()
         
         # Guardar archivo
         output_filename = 'disdro_SMN-Dorrego_resumen_historico.png'

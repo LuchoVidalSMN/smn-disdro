@@ -161,8 +161,8 @@ with st.spinner("Obteniendo datos históricos..."):
                 * **Qué muestra:** Compara la Tasa de Lluvia ($R$, en mm/h) con la Reflectividad Equivalente del Radar ($Z$, en dBZ) calculada a partir de las gotas medidas por el disdrómetro.
                 * **Cómo se interpreta:** Es una gráfica fundamental en meteorología de radares. Los radares meteorológicos miden $Z$, pero los meteorólogos necesitan saber $R$ (cuánta agua cae). El disdrómetro mide ambas al mismo tiempo, permitiendo ajustar las fórmulas (las curvas teóricas) que usan los radares para estimar la lluvia de forma más precisa.
             
-                ### 4. Parámetros Microfísicos ($D_m$ vs $\log_{10}N_w$)
-                * **Qué muestra:** Relaciona el **diámetro medio de las gotas** ($D_m$, en mm) con la **concentración de gotas** ($\log_{10}N_w$). 
+                ### 4. Parámetros Microfísicos ($D_m$ vs $\r"\log_{10}"N_w$)
+                * **Qué muestra:** Relaciona el **diámetro medio de las gotas** ($D_m$, en mm) con la **concentración de gotas** ($\r"\log_{10}"N_w$). 
                 * **Cómo se interpreta:** Se utiliza para clasificar el tipo de tormenta. 
                     * **Lluvia Estratiforme (lluvia mansa/continua):** Se agrupa hacia la izquierda y arriba (muchas gotas de tamaño pequeño a mediano).
                     * **Lluvia Convectiva (tormentas fuertes):** Se desplaza hacia la derecha (gotas mucho más grandes, típicas de nubes de gran desarrollo vertical). 

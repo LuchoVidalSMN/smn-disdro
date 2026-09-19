@@ -701,7 +701,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             
             # Eje Y Izquierdo (Parámetro a)
             ax2.plot(df_zr['Fecha'], df_zr['ZR_param_a'], marker='o', markersize=4, 
-                     color='purple', linestyle='-', linewidth=1.5, alpha=0.8)
+                     color='purple', linestyle='', linewidth=1.5, alpha=0.8)
             ax2.set_ylabel('Parámetro a', fontsize=9, fontweight='bold', color='purple')
             ax2.tick_params(axis='y', labelcolor='purple', labelsize=8)
             ax2.grid(True, axis='y', linestyle=':', alpha=0.5)
@@ -709,7 +709,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             # Eje Y Derecho adicional (Parámetro b) mediante twinx()
             ax2_b = ax2.twinx()
             ax2_b.plot(df_zr['Fecha'], df_zr['ZR_param_b'], marker='s', markersize=4, 
-                       color='darkorange', linestyle='--', linewidth=1.5, alpha=0.8)
+                       color='darkorange', linestyle='', linewidth=1.5, alpha=0.8)
             ax2_b.set_ylabel('Parámetro b', fontsize=9, fontweight='bold', color='darkorange')
             ax2_b.tick_params(axis='y', labelcolor='darkorange', labelsize=8)
         else:

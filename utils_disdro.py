@@ -666,21 +666,30 @@ def plot_espectrograma_dsd(df, clases_diametros, matriz_nd, fecha_obj, plot_date
 
 def plot_resumen_historico(df, path_out, smn_logo=None):
     """
-    Genera un gráfico resumen con la lluvia diaria acumulada, parámetros Z-R 
-    y la disponibilidad de datos.
-    El DataFrame debe tener: 'Fecha', 'Lluvia_mm', 'Dato_Disponible', 'ZR_param_a', 'ZR_param_b'.
+    Genera un gráfico resumen con la lluvia diaria acumulada, parámetros Z-R, 
+    el porcentaje de registros y la disponibilidad de datos.
+    El DataFrame debe tener: 'Fecha', 'Cantidad_Registros', 'Lluvia_mm', 
+    'Dato_Disponible', 'ZR_param_a', 'ZR_param_b'.
     """
     import matplotlib.dates as mdates
     import matplotlib.ticker as mticker
+    import matplotlib.cm as cm
+    import matplotlib.colors as mcolors
     
     # Asegurar que la columna Fecha sea datetime
     df['Fecha'] = pd.to_datetime(df['Fecha'])
     
-    # Crear figura con TRES subplots apilados
-    # Proporciones: 4 para Lluvia, 2.5 para Z-R, 1 para Disponibilidad
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, 
-                                   figsize=(12, 8), 
-                                   gridspec_kw={'height_ratios': [4, 2.5, 1], 'hspace': 0.08}, 
+    # Calcular el porcentaje de completitud (asumiendo 1440 registros = 100%)
+    if 'Cantidad_Registros' in df.columns:
+        df['Porcentaje_Registros'] = (df['Cantidad_Registros'] / 1440.0) * 100.0
+        # Limitar al 100% por si en algún caso hay más de 1440 registros
+        df['Porcentaje_Registros'] = df['Porcentaje_Registros'].clip(upper=100)
+    
+    # Crear figura con CUATRO subplots apilados
+    # Proporciones: 4 (Lluvia), 2.5 (Z-R), 1 (Porcentaje), 1 (Disponibilidad)
+    fig, (ax1, ax2, ax_pct, ax3) = plt.subplots(4, 1, 
+                                   figsize=(12, 9), 
+                                   gridspec_kw={'height_ratios': [4, 2.5, 1, 1], 'hspace': 0.08}, 
                                    sharex=True)
     
     try:
@@ -712,9 +721,31 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             ax2_b.set_ylabel('Parámetro b', fontsize=9, fontweight='bold', color='darkorange')
             ax2_b.tick_params(axis='y', labelcolor='darkorange', labelsize=8)
         else:
-            # En caso de que el CSV aún no tenga las columnas generadas
             ax2.text(0.5, 0.5, 'Parámetros Z-R no disponibles', ha='center', va='center', color='gray')
             ax2.set_yticks([])
+
+        # --- AX_PCT (NUEVO): Porcentaje de Registros ---
+        if 'Porcentaje_Registros' in df.columns:
+            # Usar un colormap, rojo para 0%, amarillo intermedio, verde para 100%
+            cmap_pct = plt.get_cmap('RdYlGn')
+            norm_pct = mcolors.Normalize(vmin=0, vmax=100)
+            
+            # Obtener el color para cada barra según su porcentaje
+            colores_pct = cmap_pct(norm_pct(df['Porcentaje_Registros']))
+            
+            ax_pct.bar(df['Fecha'], [1]*len(df), color=colores_pct, width=1.0)
+            ax_pct.set_yticks([]) # Ocultar eje Y
+            ax_pct.set_ylabel('Datos\n(%)', fontsize=9, fontweight='bold')
+            
+            # Agregar una colorbar muy finita a la derecha del panel
+            cax = fig.add_axes([0.91, 0.22, 0.01, 0.08]) # [left, bottom, width, height]
+            sm = cm.ScalarMappable(cmap=cmap_pct, norm=norm_pct)
+            sm.set_array([])
+            cbar = fig.colorbar(sm, cax=cax, orientation='vertical')
+            cbar.ax.tick_params(labelsize=7)
+        else:
+            ax_pct.text(0.5, 0.5, 'Cantidad no disponible', ha='center', va='center', color='gray')
+            ax_pct.set_yticks([])
 
         # --- AX3: Disponibilidad de Datos ---
         colores = ['#2ca02c' if disp else '#d62728' for disp in df['Dato_Disponible']]

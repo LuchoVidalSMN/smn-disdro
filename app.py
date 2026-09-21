@@ -199,7 +199,7 @@ st.sidebar.header("Parámetros de Visualización")
 fecha_seleccionada = st.sidebar.date_input("Seleccionar Fecha", datetime.today())
 fecha_str = fecha_seleccionada.strftime('%Y%m%d')
 plot_date = fecha_seleccionada.strftime('%Y-%m-%d')
-nombre_csv_esperado = f'salida_disdrometro_{fecha_str}.csv'
+nombre_csv_esperado = f'salida_disdrometro_{fecha_str}_QC.csv'
 
 if st.sidebar.button("Generar Figuras"):
     with st.spinner("Conectando a Google Drive..."):

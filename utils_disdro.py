@@ -691,8 +691,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
         ax1.tick_params(axis='y', labelsize=8)
 
-        ax1.set_title('Resumen Histórico de Observaciones - Disdrómetro SMN', 
-                      fontsize=14, pad=10)
+        ax1.set_title('Resumen Histórico de Observaciones', fontsize=14, pad=10)
  
         # --- AX2: Parámetros Z-R (Ejes Izquierdo y Derecho) ---
         if 'ZR_param_a' in df.columns and 'ZR_param_b' in df.columns:

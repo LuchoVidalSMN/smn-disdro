@@ -667,14 +667,12 @@ def plot_espectrograma_dsd(df, clases_diametros, matriz_nd, fecha_obj, plot_date
 def plot_resumen_historico(df, path_out, smn_logo=None):
     """
     Genera un gráfico resumen con la lluvia diaria acumulada, parámetros Z-R, 
-    el porcentaje de registros y la disponibilidad de datos.
+    el porcentaje de registros (barras apiladas) y la disponibilidad de datos.
     El DataFrame debe tener: 'Fecha', 'Cantidad_Registros', 'Lluvia_mm', 
     'Dato_Disponible', 'ZR_param_a', 'ZR_param_b'.
     """
     import matplotlib.dates as mdates
     import matplotlib.ticker as mticker
-    import matplotlib.cm as cm
-    import matplotlib.colors as mcolors
     
     # Asegurar que la columna Fecha sea datetime
     df['Fecha'] = pd.to_datetime(df['Fecha'])
@@ -686,7 +684,6 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         df['Porcentaje_Registros'] = df['Porcentaje_Registros'].clip(upper=100)
     
     # Crear figura con CUATRO subplots apilados
-    # Proporciones: 4 (Lluvia), 2.5 (Z-R), 1 (Porcentaje), 1 (Disponibilidad)
     fig, (ax1, ax2, ax_pct, ax3) = plt.subplots(4, 1, 
                                    figsize=(12, 9), 
                                    gridspec_kw={'height_ratios': [4, 2.5, 1, 1], 'hspace': 0.08}, 
@@ -704,7 +701,6 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
  
         # --- AX2: Parámetros Z-R (Ejes Izquierdo y Derecho) ---
         if 'ZR_param_a' in df.columns and 'ZR_param_b' in df.columns:
-            # Filtramos los días sin lluvia (donde a y b son nulos) para graficar líneas limpias
             df_zr = df.dropna(subset=['ZR_param_a', 'ZR_param_b'])
             
             # Eje Y Izquierdo (Parámetro a)
@@ -714,7 +710,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             ax2.tick_params(axis='y', labelcolor='purple', labelsize=8)
             ax2.grid(True, axis='y', linestyle=':', alpha=0.5)
             
-            # Eje Y Derecho adicional (Parámetro b) mediante twinx()
+            # Eje Y Derecho (Parámetro b)
             ax2_b = ax2.twinx()
             ax2_b.plot(df_zr['Fecha'], df_zr['ZR_param_b'], marker='s', markersize=4, 
                        color='darkorange', linestyle='', linewidth=1.5, alpha=0.8)
@@ -724,43 +720,40 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             ax2.text(0.5, 0.5, 'Parámetros Z-R no disponibles', ha='center', va='center', color='gray')
             ax2.set_yticks([])
 
-        # --- AX_PCT (NUEVO): Porcentaje de Registros ---
+        # --- AX_PCT (NUEVO): Porcentaje de Registros (Stacked Bar) ---
         if 'Porcentaje_Registros' in df.columns:
-            # Usar un colormap, rojo para 0%, amarillo intermedio, verde para 100%
-            cmap_pct = plt.get_cmap('RdYlGn')
-            norm_pct = mcolors.Normalize(vmin=0, vmax=100)
+            # Calculamos el porcentaje que falta para llegar al 100%
+            porcentaje_faltante = 100.0 - df['Porcentaje_Registros']
             
-            # Obtener el color para cada barra según su porcentaje
-            colores_pct = cmap_pct(norm_pct(df['Porcentaje_Registros']))
+            # Barra base (verde) - Porcentaje disponible
+            ax_pct.bar(df['Fecha'], df['Porcentaje_Registros'], color='#2ca02c', width=1.0)
             
-            ax_pct.bar(df['Fecha'], [1]*len(df), color=colores_pct, width=1.0)
-            ax_pct.set_yticks([]) # Ocultar eje Y
+            # Barra superior (roja) - Porcentaje faltante, arranca donde termina la verde (bottom)
+            ax_pct.bar(df['Fecha'], porcentaje_faltante, bottom=df['Porcentaje_Registros'], color='#d62728', width=1.0)
+            
             ax_pct.set_ylabel('Datos\n(%)', fontsize=9, fontweight='bold')
-            
-            # Agregar una colorbar muy finita a la derecha del panel
-            cax = fig.add_axes([0.91, 0.22, 0.01, 0.08]) # [left, bottom, width, height]
-            sm = cm.ScalarMappable(cmap=cmap_pct, norm=norm_pct)
-            sm.set_array([])
-            cbar = fig.colorbar(sm, cax=cax, orientation='vertical')
-            cbar.ax.tick_params(labelsize=7)
+            ax_pct.set_ylim(0, 100) # Fijamos el eje Y de 0 a 100 estricto
+            ax_pct.set_yticks([0, 50, 100]) # Mostramos las marcas de 0, 50 y 100
+            ax_pct.tick_params(axis='y', labelsize=8)
+            ax_pct.grid(True, axis='y', linestyle=':', alpha=0.5)
         else:
             ax_pct.text(0.5, 0.5, 'Cantidad no disponible', ha='center', va='center', color='gray')
             ax_pct.set_yticks([])
 
-        # --- AX3: Disponibilidad de Datos ---
+        # --- AX3: Disponibilidad de Datos (Día válido general) ---
         colores = ['#2ca02c' if disp else '#d62728' for disp in df['Dato_Disponible']]
         
         ax3.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
-        ax3.set_yticks([]) # Ocultar los números del eje Y
+        ax3.set_yticks([]) 
         ax3.set_ylabel('Estado', fontsize=9, fontweight='bold')
         ax3.set_xlabel('Fecha', fontsize=9, fontweight='bold')
         
-        # Formateo del eje X (etiquetas cada 15 días)
+        # Formateo del eje X
         ax3.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
         ax3.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         plt.setp(ax3.xaxis.get_majorticklabels(), rotation=90, ha='center', fontsize=8)
          
-        # Marca de agua en el primer gráfico
+        # Marca de agua
         if smn_logo is not None:
             imagebox = OffsetImage(smn_logo, zoom=1.0, alpha=0.1)
             ab = AnnotationBbox(imagebox, (0.5, 0.5), xycoords='axes fraction', frameon=False, pad=0.0)

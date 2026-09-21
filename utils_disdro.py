@@ -692,7 +692,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
     try:
         # --- AX1: Serie temporal de Lluvia ---
         ax1.bar(df['Fecha'], df['Lluvia_mm'], color='dodgerblue', width=1.5)
-        ax1.set_ylabel('Lluvia Diaria\n[mm]', fontsize=6, fontweight='bold')
+        ax1.set_ylabel('Lluvia Diaria\n[mm]', fontsize=8, fontweight='bold')
         ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
         ax1.yaxis.set_major_locator(mticker.MultipleLocator(10))
         ax1.tick_params(axis='y', labelsize=6)
@@ -706,7 +706,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             # Eje Y Izquierdo (Parámetro a)
             ax2.plot(df_zr['Fecha'], df_zr['ZR_param_a'], marker='o', markersize=4, 
                      color='purple', linestyle='', linewidth=1.5, alpha=0.8)
-            ax2.set_ylabel('Parámetro a', fontsize=6, fontweight='bold', color='purple')
+            ax2.set_ylabel('Parámetro a', fontsize=8, fontweight='bold', color='purple')
             ax2.tick_params(axis='y', labelcolor='purple', labelsize=8)
             ax2.grid(True, axis='y', linestyle=':', alpha=0.5)
             
@@ -714,7 +714,7 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             ax2_b = ax2.twinx()
             ax2_b.plot(df_zr['Fecha'], df_zr['ZR_param_b'], marker='s', markersize=4, 
                        color='darkorange', linestyle='', linewidth=1.5, alpha=0.8)
-            ax2_b.set_ylabel('Parámetro b', fontsize=6, fontweight='bold', color='darkorange')
+            ax2_b.set_ylabel('Parámetro b', fontsize=8, fontweight='bold', color='darkorange')
             ax2_b.tick_params(axis='y', labelcolor='darkorange', labelsize=8)
         else:
             ax2.text(0.5, 0.5, 'Parámetros Z-R no disponibles', ha='center', va='center', color='gray')
@@ -731,10 +731,10 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
             # Barra superior (roja) - Porcentaje faltante, arranca donde termina la verde (bottom)
             ax_pct.bar(df['Fecha'], porcentaje_faltante, bottom=df['Porcentaje_Registros'], color='#d62728', width=1.0)
             
-            ax_pct.set_ylabel('Datos\n(%)', fontsize=6, fontweight='bold')
+            ax_pct.set_ylabel('Datos (%)', fontsize=8, fontweight='bold')
             ax_pct.set_ylim(0, 100) # Fijamos el eje Y de 0 a 100 estricto
             ax_pct.set_yticks([0, 25, 50, 75, 100]) # Mostramos las marcas de 0, 50 y 100
-            ax_pct.tick_params(axis='y', labelsize=6)
+            ax_pct.tick_params(axis='y', labelsize=8)
             ax_pct.grid(True, axis='y', linestyle=':', alpha=0.5)
         else:
             ax_pct.text(0.5, 0.5, 'Cantidad no disponible', ha='center', va='center', color='gray')
@@ -745,8 +745,8 @@ def plot_resumen_historico(df, path_out, smn_logo=None):
         
         ax3.bar(df['Fecha'], [1]*len(df), color=colores, width=1.0)
         ax3.set_yticks([]) 
-        ax3.set_ylabel('Estado', fontsize=6, fontweight='bold')
-        ax3.set_xlabel('Fecha', fontsize=6, fontweight='bold')
+        ax3.set_ylabel('Estado', fontsize=8, fontweight='bold')
+        ax3.set_xlabel('Fecha', fontsize=8, fontweight='bold')
         
         # Formateo del eje X
         ax3.xaxis.set_major_locator(mdates.DayLocator(interval=15)) 
